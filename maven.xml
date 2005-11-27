@@ -1,0 +1,56 @@
+<?xml version="1.0" ?>
+<project xmlns:ant="jelly:ant" xmlns:artifact="artifact" >
+	<goal name="s2sqlmap:compile">
+		<ant:javac srcdir="${src}/java" destdir="${build}" debug="on">
+          <ant:classpath>
+          <ant:path refid="maven.dependency.classpath"/>
+		  </ant:classpath>
+	  </ant:javac>
+	</goal>
+
+	<goal name="s2sqlmap:copy" prereqs="s2sqlmap:compile">
+		<ant:copy todir="${build}">
+			<ant:fileset dir="${src}">
+				<ant:include name="**/*.properties" />
+				<ant:include name="**/*.xml" />
+				<ant:include name="**/*.dtd" />
+				<ant:exclude name="build.xml" />
+				<ant:exclude name="test/**" />
+			</ant:fileset>
+		</ant:copy>
+	</goal>
+
+	<goal name="s2sqlmap:dist" prereqs="s2sqlmap:compile,s2sqlmap:copy,s2sqlmap:cleans2jarfile">
+		<ant:jar jarfile="${lib}/${jarfile}" basedir="${build}" includes="${package}"/>
+	</goal>
+
+	<goal name="s2sqlmap:cleanbuild">
+		<ant:delete dir="${build}/${package}" />
+	</goal>
+
+	<goal name="s2sqlmap:clean" prereqs="s2sqlmap:cleanbuild">
+		<ant:delete file="${dist}/${jarfile}" />	
+	</goal>
+
+	<goal name="s2sqlmap:cleans2jarfile">
+		<ant:delete>
+			<ant:fileset dir="${lib}" defaultexcludes="no">
+				<ant:include name="s2-s2sqlmap-*.jar" />
+			</ant:fileset>
+		</ant:delete>
+	</goal>
+
+	<goal name="s2sqlmap:release" prereqs="s2sqlmap:dist">
+	        <ant:delete dir="${setupdir}"/>
+		<ant:mkdir dir="${setupdir}"/>
+		<ant:copy todir="${setupdir}">
+			<ant:fileset dir=".">
+				<ant:exclude name="**/CVS/**" />
+				<ant:exclude name="${build}/**" />
+				<ant:exclude name="${setupdir}" />
+				<ant:exclude name="target" />
+			</ant:fileset>
+		</ant:copy>
+		<ant:zip zipfile="${releasejarfile}" basedir="${setupdir}"/>
+	</goal>
+</project>

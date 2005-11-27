@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components.dtd">
+<components>
+    <include path="j2ee.dicon"/>
+    
+    <component
+    name="s2sqlmap" 
+    class="org.seasar.s2sqlmap.S2SqlMapConfig">
+      <property name="configLocation">"/com/example/forum/sql-map-config.xml"</property>
+      <initMethod name="init"/>
+    </component>
+ 
+    <component
+    name="forumDao" 
+    class="com.example.forum.SqlMapForumDao"/>
+    
+    <component
+    name="forum" 
+    class="com.example.forum.ForumServiceImpl">
+      <property name="ForumDao">forumDao</property>
+    </component>
+
+</components>

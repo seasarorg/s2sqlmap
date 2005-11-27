@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+
+    <!-- ========================= RESOURCE DEFINITIONS ========================= -->
+    <bean id="propertyConfigurer" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location"><value>/WEB-INF/board.properties</value></property>
+    </bean>
+
+    <!-- Local DataSource that works in any environment -->
+    <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+        destroy-method="close">
+        <property name="driverClassName"><value>${jdbc.basic.driver}</value></property>
+        <property name="url"><value>${jdbc.basic.url}</value></property>
+        <property name="username"><value>${jdbc.basic.username}</value></property>
+        <property name="password"><value>${jdbc.basic.password}</value></property>
+    </bean>
+
+    <!-- SqlMap setup for iBATIS Database Layer -->
+    <bean id="sqlMap" class="org.springframework.orm.ibatis.SqlMapFactoryBean">
+        <property name="configLocation"><value>/WEB-INF/board-sql-map-config.xml</value></property>
+    </bean>
+
+    <!-- ========================= Transaction manager for a single JDBC DataSource ========================= -->
+    
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource"><ref local="dataSource"/></property>
+    </bean>
+
+    <bean id="forum" class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+       <property name="transactionManager"><ref bean="transactionManager"/></property>
+       <property name="target"><ref local="forumTarget"/></property>
+       <property name="transactionAttributes">
+        <props>
+            <prop key="add*">PROPAGATION_REQUIRED</prop>
+            <prop key="clear*">PROPAGATION_REQUIRED</prop>
+            <prop key="remove*">PROPAGATION_REQUIRED</prop>
+            <prop key="update*">PROPAGATION_REQUIRED</prop>
+            <prop key="*">PROPAGATION_NOT_SUPPORTED,readOnly</prop>
+        </props>
+       </property>
+    </bean>
+
+    <bean id="forumTarget" class="com.example.forum.ForumServiceImpl">
+        <property name="forumDao"><ref local="forumDao"/></property>
+    </bean>
+
+    <!-- ========================= DAO DEFINITION: FORUM DAO ========================= -->
+        
+    <bean id="forumDao" class="com.example.forum.SqlMapForumDao">
+        <property name="dataSource"><ref local="dataSource"/></property>
+        <property name="sqlMap"><ref local="sqlMap"/></property>
+    </bean>
+</beans>

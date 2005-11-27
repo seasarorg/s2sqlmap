@@ -1,0 +1,4 @@
+org.seasar.s2sqlmap
+org.seasar.s2sqlmap.exception.port
+org.seasar.s2sqlmap.spring.lob.port
+org.seasar.s2sqlmap.support

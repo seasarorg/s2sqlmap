@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<document>
+  <properties>
+    <title>S2SqlMap</title>
+    <author email="foo@hoge">Gwatsman</author>
+  </properties>
+  <body>
+    <section name="About S2SqlMap">
+<p><b>iBATIS SQL MapSeasar2対応パッケージ。(2.2.10)</b></p>
+<p> 
+S2SqlMapはSpring FrameworkのApache <a href="http://ibatis.apache.org/">iBATIS</a> SQL Mapsサポートをベースに開発されたSeasar向けiBATIS SQL Maps対応ライブラリです。
+S2SqlMapではコネクションプール/トランザクションマネージャ/例外および自動バインディング部分についてSeasar向けとなっています。
+現在Beta版です。Lob群についてはorg.seasar.s2sqlmap.spring.lob.portに関連するクラスをパッケージングしています。
+(OracleLobCreator/OracleLobHandlerクラスは保留されています。)　
+</p>
+    </section>
+<section name="S2SqlMapのテスト/コンパイル">
+<p> 
+テスト/コンパイル作業は以下の通りです。作業にはMavenが必須です。
+<ul>
+<li>まず.maven/repositoryをローカルのレポジトリにコピーします。(java.transaction)</li>
+<li>付属のrundb.shを実行します。(Windowsの場合はbatにリネームし実行します。)</li>
+<li>付属のrunclient.shを実行し、localhostのxdbに接続し、test以下に付属するsqlファイルの内容を実行します。</li>
+<li>コマンドラインからmaven testを実行します。</li>
+</ul>
+</p>
+
+    </section>
+    
+    <section name="S2SqlMap利用方法">
+ 
+<subsection name="SQLMap(1)">   
+
+<p>SQLMapを利用する場合のdiconファイルの内容は以下の通りです。</p>
+
+
+<pre><example name="escapeXml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components.dtd">
+<components>
+    <include path="j2ee.dicon"/>
+    
+    <component class="org.seasar.s2sqlmap.S2SqlMapConfig">
+      <property name="configLocation">"/org/seasar/s2sqlmap/ibatis/sql-map-config.xml"</property>
+      <initMethod name="init"/>
+    </component>
+ 
+    <component
+    name="dao" 
+    class="org.iglab.seasar.ibatis.S2SqlMapTestDao"/>
+</components>
+]]>
+</example></pre>
+
+
+<p>S2SqlMapConfigおよびSQLMap2対応のS2SqlMapClientConfigプロパティーconfigLocationにはシステムリソース内のSQL Map Configの位置を示すパスを指定します。付属のサンプルでは以下の通りです。</p>
+
+<pre><example name="escapeXml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sql-map-config
+    PUBLIC "-//iBATIS.com//DTD SQL Map Config 1.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-config.dtd">
+<sql-map-config>
+  <sql-map resource="com/example/forum/HsqldbForum.xml"/>
+</sql-map-config>
+]]>
+</example></pre>
+
+<p>DaoクラスとSqlMapConfig/SqlMapClientConfigとの対応は以下の通りです。</p>
+
+
+<table>
+<tr><th>Dao</th><th>SqlMap/SqlMapClient</th><th>プロパティー</th></tr>
+<tr><td>S2SqlMapDaoSupport</td><td>org.seasar.s2sqlmap.S2SqlMapConfig</td><td>SqlMapConfig</td></tr>
+<tr><td>S2SqlMapClientDaoSupport</td><td>org.seasar.s2sqlmap.S2SqlMapClientConfig</td><td>SqlMapClientConfig</td></tr>
+</table>
+
+</subsection>
+
+<subsection name="SQLMap2">
+<p>SQLMap2を利用する場合のdiconファイルの内容は以下の通りです。</p>
+
+
+<pre><example name="escapeXml"><![CDATA[
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components.dtd">
+<components>
+    <include path="j2ee.dicon"/>
+    
+    <component class="org.seasar.s2sqlmap.S2SqlMapClientConfig">
+      <property name="configLocation">"/org/seasar/s2sqlmap/ibatis/sql-map2-config.xml"</property>
+      <initMethod name="init"/>
+    </component>
+ 
+    <component
+    name="dao" 
+    class="org.seasar.s2sqlmap.S2SqlMapClientTestDao">
+      <initMethod name="init"/>
+    </component>
+</components>
+]]>
+</example></pre>
+
+<p>
+org.seasar.s2sqlmap.support.S2SqlMapClientDaoSupportについてカスタムなS2SqlMapClientTemplateが指定された場合を除いて、
+initMethodを省略することができます。
+</p>
+
+<pre><example name="escapeXml"><![CDATA[
+    <component
+    name="dao" 
+    class="org.seasar.s2sqlmap.S2SqlMapClientTestDao"/>
+]]>
+</example></pre>
+
+</subsection>
+</section>
+
+</body>
+</document>

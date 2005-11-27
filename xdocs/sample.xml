@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document>
+  <properties>
+    <title>S2SqlMap</title>
+    <author email="foo@hoge">Gwatsman</author>
+  </properties>
+  <body>
+    <section name="S2SqlMap サンプル">
+      <subsection name="サンプル: forum">
+     　 <p>forumはJSPWikiのForumPluginをベースとするMySQL/HSQLDB上で動作するS2SqlMapによるForumサンプルです。forumのコンパイルにはMavenが必要です。</p>
+      　<p>sample/forumの起動方法は以下の通りです。</p>
+      　<ul>
+          <li>libに配置されているhsqldb.jarをsample/forum/libにコピーします。</li>
+	  <li>simple/forumの.maven/repositoryをMavenのレポジトリにコピーします。</li>
+	  <li>maven warを実行します。</li>
+          <li>ディレクトリのrundb.batもしくはrundb.shを実行します。</li>
+          <li>ディレクトリのrunclient.batもしくはrunclient.shを実行し、jdbc:hsqldb:hsql://localhost/forumにServerモードで接続し、付属のhsqldb_create_forum.sqlの内容をコピー実行します。</li>
+	  <li>任意のWebコンテナにforum.warを配置します。(必要であれば展開後のclassesに設定ファイルを配置します。)</li>
+	  <li>サーバーがlocahost:8080の場合は、http://localhost:8080/forum/Topic_View.jsp?topic_index=1にアクセスします。</li>
+        </ul>
+      </subsection>
+    </section>
+  </body>
+</document>

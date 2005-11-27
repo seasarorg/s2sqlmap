@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sql-map
+    PUBLIC "-//iBATIS.com//DTD SQL Map 1.0//EN"
+    "http://www.ibatis.com/dtd/sql-map.dtd">
+<sql-map name="Forum">
+
+<!-- #### RESULT-MAP CONFIGURATIONS #### -->
+ 
+<!-- #### QUERIES AND STATEMENTS #### -->
+    <mapped-statement 
+       name="listThreads" 
+       result-class="com.example.forum.domainmodel.ThreadModel">
+       SELECT 
+         thread.title, 
+         post.index, 
+         post.thread_index, 
+         post.text, 
+         post.user, 
+         DATE_FORMAT(post.timestamp, '%m/%d/%y') AS timestamp
+         FROM post LEFT JOIN thread ON post.thread_index = thread.index
+         WHERE 
+           thread.index=#value#
+    </mapped-statement>
+
+    <mapped-statement 
+       name="addPost" 
+       parameter-class="com.example.forum.domainmodel.ForumPost">
+       INSERT INTO post (
+       post.thread_index, 
+       post.text, 
+       post.user, 
+       timestamp) 
+       VALUES 
+       (#thread_index#,#text#, #user#, NOW())
+    </mapped-statement>
+
+    <mapped-statement 
+       name="addThread" 
+       parameter-class="com.example.forum.domainmodel.ForumThread">
+      INSERT INTO thread 
+      (thread.topic_index, 
+       thread.title, 
+       thread.starter) 
+      VALUES 
+      (#topic_index#, #title#, #starter#)
+    </mapped-statement>
+ 
+    <!--<mapped-statement 
+       name="addTopic" >
+    </mapped-statement>-->
+    
+    <mapped-statement 
+       name="updatePost" 
+       parameter-class="com.example.forum.domainmodel.ForumPost">
+       UPDATE post 
+       SET post.text = #text#, 
+         post.timestamp=NOW() 
+       WHERE post.index=#index#
+    </mapped-statement>
+    
+    <!--<mapped-statement 
+       name="listTopics" 
+       result-class="com.example.forum.domainmodel.ForumTopic">
+       SELECT 
+         topic.category_index 
+       FROM 
+         topic 
+       WHERE 
+         topic.index=#value#
+    </mapped-statement>-->
+    
+    <mapped-statement 
+       name="findPost" 
+       result-class="com.example.forum.domainmodel.PostModel">
+       SELECT 
+         post.index, 
+         post.thread_index, 
+         post.text, 
+         post.user, 
+         DATE_FORMAT(post.timestamp, '%m/%d/%y') AS timestamp
+       FROM 
+         post 
+       WHERE 
+         post.index=#value#
+    </mapped-statement>
+
+    <mapped-statement 
+       name="getCategoryName" 
+       result-class="java.lang.String">
+      SELECT 
+        category.title 
+      FROM category 
+      WHERE 
+        category.index=#value#
+    </mapped-statement>
+    
+    <mapped-statement 
+       name="addCategory" 
+       parameter-class="com.example.forum.domainmodel.ForumCategory">
+      INSERT INTO 
+        category 
+         (category.parent_index, category.title) 
+        VALUES 
+         (#parent_index#, 
+          #title#)
+    </mapped-statement>
+    
+   <mapped-statement 
+       name="listCategoriesByParentId" 
+       result-class="com.example.forum.domainmodel.ForumCategory">
+          SELECT 
+            * 
+          FROM 
+            category 
+          WHERE 
+            parent_index=#value#
+    </mapped-statement>
+    
+   <mapped-statement 
+       name="updateCategoryOnTopic">
+          UPDATE topic 
+          set 
+            topic.category_index=#category_index#
+          WHERE 
+            topic.index=#topic_index#
+    </mapped-statement>
+    
+    
+   <mapped-statement 
+       name="getCategoryIdByTopicId" 
+       result-class="java.lang.Integer">
+          SELECT 
+            topic.category_index 
+          FROM topic 
+          WHERE 
+            topic.index = #value#
+    </mapped-statement>
+
+   <mapped-statement 
+       name="getCategory" 
+       result-class="com.example.forum.domainmodel.ForumCategory">
+          SELECT 
+            * 
+          FROM 
+            category 
+          WHERE 
+            category.index=#value#
+   </mapped-statement>
+
+   <mapped-statement 
+       name="countThreadsByTopicId" 
+       result-class="java.lang.Integer">
+         SELECT 
+           COUNT(*)
+         FROM 
+           thread 
+         WHERE 
+           thread.topic_index=#value#
+    </mapped-statement>
+    
+   <mapped-statement 
+       name="listThreadsByTopicId" 
+       result-class="com.example.forum.domainmodel.ForumThread">
+         SELECT 
+           *
+         FROM 
+           thread 
+         WHERE thread.topic_index = #topic_index# 
+         LIMIT $offset$,$limit$
+    </mapped-statement>
+
+   <mapped-statement 
+       name="listTopicsByCategoryId" 
+       result-class="com.example.forum.domainmodel.ForumTopic">
+        SELECT 
+          * 
+        FROM 
+          topic
+        WHERE 
+          category_index=#value#
+   </mapped-statement>
+
+   <mapped-statement 
+       name="getThreadMetadata" 
+       result-class="com.example.forum.domainmodel.ThreadMetadata">
+        SELECT 
+          COUNT(*) thread_count, 
+          DATE_FORMAT(MAX(timestamp), '%m/%d/%y %h:%i') AS timestamp 
+        FROM post 
+        WHERE 
+          post.thread_index=#value#;
+    </mapped-statement>
+</sql-map>

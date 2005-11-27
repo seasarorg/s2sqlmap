@@ -1,0 +1,63 @@
+<project name="s2sqlmap" default="dist" basedir=".">
+
+	<property file="project.properties" />
+	
+	<fileset id="classpath" dir="${lib}">
+		<include name="*" />
+	</fileset>
+
+	<target name="compile">
+		<javac srcdir="${src}/java" destdir="${build}" debug="on">
+			<classpath>
+				<fileset refid="classpath" />
+			</classpath>
+		</javac>
+	</target>
+
+	<target name="copy" depends="compile">
+		<copy todir="${build}">
+			<fileset dir="${src}">
+				<include name="**/*.properties" />
+				<include name="**/*.xml" />
+				<include name="**/*.dtd" />
+				<include name="**/*.dicon" />
+				<exclude name="build.xml" />
+			</fileset>
+		</copy>
+	</target>
+
+	<target name="dist" depends="compile,copy,cleantargetjarfile">
+		<jar jarfile="${lib}/${jarfile}" basedir="${build}" includes="${package}"/>
+	</target>
+
+	<target name="cleanbuild">
+		<delete dir="${build}/${package}" />
+	</target>
+
+	<target name="clean" depends="cleanbuild">
+		<delete file="${dist}/${jarfile}" />
+	</target>
+
+	<target name="release" depends="dist">
+	        <delete dir="${setupdir}"/>
+		<mkdir dir="${setupdir}"/>
+		<copy todir="${setupdir}">
+			<fileset dir=".">
+				<exclude name="**/CVS/**" />
+				<exclude name="${build}/**" />
+				<exclude name="${setupdir}" />
+				<exclude name="target" />
+			</fileset>
+		</copy>
+		<zip zipfile="${releasejarfile}" basedir="${setupdir}"/>
+	</target>
+
+	<target name="cleantargetjarfile">
+		<delete>
+			<fileset dir="${lib}" defaultexcludes="no">
+				<include name="s2-seasar-*.jar" />
+			</fileset>
+		</delete>
+	</target>
+</project>
+

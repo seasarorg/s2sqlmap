@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html><head><title>S2SqlMap - S2SqlMap</title><style type="text/css" media="all">
+          @import url("./style/maven-base.css");
+          
+			    @import url("./style/maven-theme.css");</style><link rel="stylesheet" href="./style/print.css" type="text/css" media="print"></link><meta http-equiv="Content-Type" content="text/html; charset=utf-8"></meta><meta name="author" content="Gwatsman"></meta><meta name="email" content="foo@hoge"></meta></head><body class="composite"><div id="banner"><a href="" id="projectLogo"><span>s2-sqlmap</span></a><div class="clear"><hr></hr></div></div><div id="breadcrumbs"><div class="xleft">
+                	Last published: 27 November 2005
+                  | Doc for 1.0.0b</div><div class="xright"></div><div class="clear"><hr></hr></div></div><div id="leftColumn"><div id="navcolumn"><div id="menuS2SqlMap"><h5>S2SqlMap</h5><ul><li class="none"><strong><a href="index.html">ホーム</a></strong></li></ul></div><div id="menuDownloads"><h5>Downloads</h5><ul><li class="none"><a href="downloads.html">ダウンロード</a></li></ul></div><div id="menuSample"><h5>Sample</h5><ul><li class="none"><a href="sample.html">サンプル</a></li></ul></div><div id="menuProject_Documentation"><h5>Project Documentation</h5><ul><li class="none"><strong><a href="index.html">About s2-sqlmap</a></strong></li><li class="collapsed"><a href="project-info.html">Project Info</a></li><li class="collapsed"><a href="maven-reports.html">Project Reports</a></li><li class="none"><a href="http://maven.apache.org/development-process.html" class="externalLink" title="External Link">Development Process</a></li></ul></div><a href="http://maven.apache.org/" title="Built by Maven" id="poweredBy"><img alt="Built by Maven" src="./images/logos/maven-button-1.png"></img></a></div></div><div id="bodyColumn"><div class="contentBox"><div class="section"><a name="About_S2SqlMap"></a><h2>About S2SqlMap</h2><p><b>iBATIS SQL MapSeasar2対応パッケージ。(2.2.10)</b></p><p> 
+S2SqlMapはSpring FrameworkのApache <a href="http://ibatis.apache.org/" class="externalLink" title="External Link">iBATIS</a> SQL Mapsサポートをベースに開発されたSeasar向けiBATIS SQL Maps対応ライブラリです。
+S2SqlMapではコネクションプール/トランザクションマネージャ/例外および自動バインディング部分についてSeasar向けとなっています。
+現在Beta版です。Lob群についてはorg.seasar.s2sqlmap.spring.lob.portに関連するクラスをパッケージングしています。
+(OracleLobCreator/OracleLobHandlerクラスは保留されています。)　
+</p></div><div class="section"><a name="S2SqlMapのテスト_コンパイル"></a><h2>S2SqlMapのテスト/コンパイル</h2><p> 
+テスト/コンパイル作業は以下の通りです。作業にはMavenが必須です。
+<ul>
+<li>まず.maven/repositoryをローカルのレポジトリにコピーします。(java.transaction)</li>
+<li>付属のrundb.shを実行します。(Windowsの場合はbatにリネームし実行します。)</li>
+<li>付属のrunclient.shを実行し、localhostのxdbに接続し、test以下に付属するsqlファイルの内容を実行します。</li>
+<li>コマンドラインからmaven testを実行します。</li>
+</ul>
+</p></div><div class="section"><a name="S2SqlMap利用方法"></a><h2>S2SqlMap利用方法</h2><div class="subsection"><a name="SQLMap_1_"></a><h3>SQLMap(1)</h3><p>SQLMapを利用する場合のdiconファイルの内容は以下の通りです。</p><pre><example name="escapeXml">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components.dtd"&gt;
+&lt;components&gt;
+    &lt;include path="j2ee.dicon"/&gt;
+    
+    &lt;component class="org.seasar.s2sqlmap.S2SqlMapConfig"&gt;
+      &lt;property name="configLocation"&gt;"/org/seasar/s2sqlmap/ibatis/sql-map-config.xml"&lt;/property&gt;
+      &lt;initMethod name="init"/&gt;
+    &lt;/component&gt;
+ 
+    &lt;component
+    name="dao" 
+    class="org.iglab.seasar.ibatis.S2SqlMapTestDao"/&gt;
+&lt;/components&gt;
+
+</example></pre><p>S2SqlMapConfigおよびSQLMap2対応のS2SqlMapClientConfigプロパティーconfigLocationにはシステムリソース内のSQL Map Configの位置を示すパスを指定します。付属のサンプルでは以下の通りです。</p><pre><example name="escapeXml">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE sql-map-config
+    PUBLIC "-//iBATIS.com//DTD SQL Map Config 1.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-config.dtd"&gt;
+&lt;sql-map-config&gt;
+  &lt;sql-map resource="com/example/forum/HsqldbForum.xml"/&gt;
+&lt;/sql-map-config&gt;
+
+</example></pre><p>DaoクラスとSqlMapConfig/SqlMapClientConfigとの対応は以下の通りです。</p><table class="bodyTable"><tr class="a"><th>Dao</th><th>SqlMap/SqlMapClient</th><th>プロパティー</th></tr><tr class="b"><td>S2SqlMapDaoSupport</td><td>org.seasar.s2sqlmap.S2SqlMapConfig</td><td>SqlMapConfig</td></tr><tr class="a"><td>S2SqlMapClientDaoSupport</td><td>org.seasar.s2sqlmap.S2SqlMapClientConfig</td><td>SqlMapClientConfig</td></tr></table></div><div class="subsection"><a name="SQLMap2"></a><h3>SQLMap2</h3><p>SQLMap2を利用する場合のdiconファイルの内容は以下の通りです。</p><pre><example name="escapeXml">
+&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components.dtd"&gt;
+&lt;components&gt;
+    &lt;include path="j2ee.dicon"/&gt;
+    
+    &lt;component class="org.seasar.s2sqlmap.S2SqlMapClientConfig"&gt;
+      &lt;property name="configLocation"&gt;"/org/seasar/s2sqlmap/ibatis/sql-map2-config.xml"&lt;/property&gt;
+      &lt;initMethod name="init"/&gt;
+    &lt;/component&gt;
+ 
+    &lt;component
+    name="dao" 
+    class="org.seasar.s2sqlmap.S2SqlMapClientTestDao"&gt;
+      &lt;initMethod name="init"/&gt;
+    &lt;/component&gt;
+&lt;/components&gt;
+
+</example></pre><p>
+org.seasar.s2sqlmap.support.S2SqlMapClientDaoSupportについてカスタムなS2SqlMapClientTemplateが指定された場合を除いて、
+initMethodを省略することができます。
+</p><pre><example name="escapeXml">
+    &lt;component
+    name="dao" 
+    class="org.seasar.s2sqlmap.S2SqlMapClientTestDao"/&gt;
+
+</example></pre></div></div></div></div><div class="clear"><hr></hr></div><div id="footer"><div class="xright">© 2005, The Seasar Project</div><div class="clear"><hr></hr></div></div></body></html>

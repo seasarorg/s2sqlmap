@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE components PUBLIC "-//SEASAR//DTD S2Container//EN"
+"http://www.seasar.org/dtd/components.dtd">
+<components>
+    <include path="j2ee.dicon"/>
+    <component
+    name="sqlMapConfig" 
+    class="org.seasar.s2sqlmap.S2SqlMapConfig">
+      <property name="configLocation">"/org/seasar/s2sqlmap/sql-map-config.xml"</property>
+      <initMethod name="init"/>
+    </component>
+    
+    <component
+    name="dao" 
+    class="org.seasar.s2sqlmap.S2SqlMapTestDao"/>
+    
+    <!--<component
+    name="dao" 
+    class="org.seasar.s2sqlmap.S2SqlMapTestDao">
+      <property name="sqlMapConfig">sqlMapConfig</property>
+      <property name="DataSource">dataSource</property>
+    </component>-->
+</components>

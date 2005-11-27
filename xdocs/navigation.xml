@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="s2-sqlmap" href="">
+
+  <title>S2SqlMap</title>
+  <logo href="">S2SqlMap</logo>
+  <organizationLogo href="">S2SqlMap</organizationLogo>
+
+  <body>
+    <menu name="S2SqlMap">
+      <item name="ホーム"  href="/index.html"/>
+    </menu>
+    <menu name="Downloads">
+      <item name="ダウンロード" href="/downloads.html"/>
+    </menu>
+    <menu name="Sample">
+      <item name="サンプル" href="/sample.html"/>
+    </menu>
+  </body>
+</project>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sql-map-config
+    PUBLIC "-//iBATIS.com//DTD SQL Map Config 1.0//EN"
+    "http://www.ibatis.com/dtd/sql-map-config.dtd">
+
+<sql-map-config>
+  <sql-map resource="org/seasar/s2sqlmap/TestSqlMap.xml"/>
+</sql-map-config>

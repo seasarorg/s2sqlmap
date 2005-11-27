@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sql-map
+    PUBLIC "-//iBATIS.com//DTD SQL Map 1.0//EN"
+    "http://www.ibatis.com/dtd/sql-map.dtd">
+<sql-map name="Test">
+
+<!-- #### QUERIES AND STATEMENTS #### -->
+ 
+    <mapped-statement name="insertTest">
+        INSERT INTO test
+          (hoge,foo,bar)
+        VALUES
+          (#hoge#,#foo#,#bar#)
+    </mapped-statement>
+    
+    <mapped-statement name="findTest"
+        result-class="org.seasar.s2sqlmap.TestModel">
+        SELECT
+          * 
+        FROM
+          test
+        WHERE
+          hoge=#value#
+    </mapped-statement>
+
+    <mapped-statement name="truncate">
+        DELETE 
+        FROM
+        test
+    </mapped-statement>
+</sql-map>
+ 
