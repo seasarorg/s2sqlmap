@@ -3,7 +3,7 @@
 <%@ page import="com.example.forum.*"%>
 <%@ page import="com.example.forum.domainmodel.*"%>
 <%
- ForumService forum = (ForumService)ConponentConfigurer.getComponent(pageContext.getServletContext(), "forum");
+ ForumService forum = (ForumService)ComponentConfigurer.getComponent(pageContext.getServletContext(), "forum");
 %>
 <%
     int topic_index =  TypeUtils.toInt("" + request.getParameter("topic_index"), 0);

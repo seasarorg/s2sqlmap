@@ -9,9 +9,9 @@
     <section name="About S2SqlMap">
 <p><b>iBATIS SQL MapSeasar2対応パッケージ。(2.2.10)</b></p>
 <p> 
-S2SqlMapはSpring FrameworkのApache <a href="http://ibatis.apache.org/">iBATIS</a> SQL Mapsサポートをベースに開発されたSeasar向けiBATIS SQL Maps対応ライブラリです。
-S2SqlMapではコネクションプール/トランザクションマネージャ/例外および自動バインディング部分についてSeasar向けとなっています。
-現在Beta版です。Lob群についてはorg.seasar.s2sqlmap.spring.lob.portに関連するクラスをパッケージングしています。
+S2SqlMapはSpring FrameworkのApache <a href="http://ibatis.apache.org/">iBATIS</a> SQL MapsサポートのSeasar向け移植ライブラリです。
+S2SqlMapではコネクションプール/トランザクションマネージャ/例外および自動バインディング部分についてSeasarへ向けた移植を行っております。
+Lob群についてはorg.seasar.s2sqlmap.spring.lob.portに関連するクラスをパッケージングしています。
 (OracleLobCreator/OracleLobHandlerクラスは保留されています。)　
 </p>
     </section>

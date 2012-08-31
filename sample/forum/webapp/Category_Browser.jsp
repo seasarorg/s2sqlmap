@@ -3,7 +3,7 @@
 <%@ page import="com.example.forum.*"%>
 <%@ page import="com.example.forum.domainmodel.*"%>
 <%
-ForumService forum = (ForumService)ConponentConfigurer.getComponent(application, "forum");
+ForumService forum = (ForumService)ComponentConfigurer.getComponent(application, "forum");
 %>
 <%@ include file="template_parts/top.jsp" %>
 <%

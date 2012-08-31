@@ -4,7 +4,7 @@
 <%@ page import="com.example.forum.domainmodel.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <%
-ForumService forum = (ForumService)ConponentConfigurer.getComponent(application, "forum");
+ForumService forum = (ForumService)ComponentConfigurer.getComponent(application, "forum");
 
    String action = request.getParameter("action");
    int topic_index = Integer.parseInt(request.getParameter("topic_index"));
